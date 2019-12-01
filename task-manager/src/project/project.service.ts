@@ -13,4 +13,11 @@ export class ProjectService {
   async getProjects(): Promise<Project[]> {
     return await this.projectRepository.find();
   }
+  async getProjectByProjectKey(key: string): Promise<Project> {
+    return (await this.projectRepository.find({ key }))[0];
+  }
+  async createProject(project: Project): Promise<Project> {
+    console.log('hdhhdhdh=======', project);
+    return this.projectRepository.save(project);
+  }
 }
