@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../../users/users.entity';
-import { Project } from '../project.entity';
+import { User } from '../users/users.entity';
+import { Project } from '../project/project.entity';
 
 @Entity()
 export class ProjectHasUsers {
@@ -15,6 +15,9 @@ export class ProjectHasUsers {
 
   @Column()
   public role!: string;
+
+  @Column()
+  public createdAt!: Date;
 
   @ManyToOne(
     type => Project,

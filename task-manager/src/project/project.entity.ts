@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ProjectHasUsers } from './projectHasUsers/projectHasUsers.entity';
+import { ProjectHasUsers } from '../projectHasUsers/projectHasUsers.entity';
 
 @Entity()
 export class Project {
