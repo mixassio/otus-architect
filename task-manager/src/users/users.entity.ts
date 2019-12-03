@@ -18,9 +18,9 @@ export class User {
   @Column({ length: 100, nullable: true })
   email: string;
 
-  @OneToMany(
-    type => ProjectHasUsers,
-    projectHasUsers => projectHasUsers.user,
-  )
-  public projectHasUsers!: ProjectHasUsers[];
+  // @OneToMany(
+  //   type => ProjectHasUsers,
+  //   projectHasUsers => projectHasUsers.user,
+  // )
+  // public projectHasUsers!: ProjectHasUsers[];
 }

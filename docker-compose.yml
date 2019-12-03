@@ -1,0 +1,55 @@
+version: "3.3"
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=qweasd
+      - POSTGRES_USER=task_manager
+      - POSTGRES_DB=db_task_manager
+    ports:
+      - 54320:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - mynetwork
+  redis:
+    image: redis
+    ports:
+      - 6376:6379
+    volumes:
+      - redisdata:/data
+    networks:
+      - mynetwork
+  app:
+    build:
+      context: ./task-manager
+      dockerfile: Dockerfile
+    command: sh -c "npm run  start"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - "~/.bash_history:/.bash_history"
+      - "./task-manager:/usr/src/app:cached"
+      - "/tmp:/tmp:delegated"
+    ports:
+      - 3000:3000
+    networks:
+      - mynetwork
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  mynetwork:
+    external: true

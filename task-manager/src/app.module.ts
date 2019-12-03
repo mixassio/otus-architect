@@ -4,21 +4,22 @@ import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectModule } from './project/project.module';
+import { User } from './users/users.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'database.db',
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'test',
+      entities: [User],
       synchronize: true,
-      logging: false,
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     }),
-    AuthModule,
     UsersModule,
-    ProjectModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [],
 })
 export class AppModule {}

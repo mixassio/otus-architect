@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { TaskType } from './taskTypes/taskType.entity';
 import { ProjectHasUsers } from './projectHasUsers/projectHasUsers.entity';
 
 @Entity()
@@ -13,14 +12,11 @@ export class Project {
   @Column({ length: 50, unique: true })
   title: string;
 
-  @Column({ length: 255, unique: true })
+  @Column({ length: 255, unique: false })
   description: string;
 
-  @OneToMany(
-    type => TaskType,
-    taskType => taskType.project,
-  )
-  taskTypes: TaskType[];
+  @Column({ length: 255, unique: false })
+  taskTypes: string;
 
   @OneToMany(
     type => ProjectHasUsers,
