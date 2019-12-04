@@ -8,7 +8,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test
     ports:
-      - "3306:3306"
+      - 3306:3306
+    volumes:
+      - mysqlvolume:/var/lib/mysql
     networks:
       - mynetwork
   # postgres:
@@ -58,9 +60,10 @@ services:
       - mynetwork
 
 volumes:
-  pgdata:
+  # pgdata:
+  mysqlvolume:
   redisdata:
 
 networks:
   mynetwork:
-    external: true
+    external: false
