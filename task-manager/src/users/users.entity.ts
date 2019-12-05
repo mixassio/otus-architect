@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ProjectHasUsers } from '../projectHasUsers/projectHasUsers.entity';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+// import { ProjectHasUsers } from '../projectHasUsers/projectHasUsers.entity';
+import { Project } from '../project/project.entity';
 
 @Entity()
 export class User {
@@ -18,9 +19,15 @@ export class User {
   @Column({ length: 100, nullable: true })
   email: string;
 
-  @OneToMany(
-    type => ProjectHasUsers,
-    projectHasUsers => projectHasUsers.user,
+  @ManyToMany(
+    type => Project,
+    project => project.users,
   )
-  public projectHasUsers!: ProjectHasUsers[];
+  projects: Project[];
+
+  // @OneToMany(
+  //   type => ProjectHasUsers,
+  //   projectHasUsers => projectHasUsers.user,
+  // )
+  // public projectHasUsers!: ProjectHasUsers[];
 }
