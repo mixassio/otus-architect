@@ -59,6 +59,19 @@ services:
       - 3000:3000
     networks:
       - mynetwork
+  app2:
+    build:
+      context: ./hook-parser
+      dockerfile: Dockerfile
+    command: sh -c "npm run  start"
+    volumes:
+      - "~/.bash_history:/.bash_history"
+      - "./hook-parser:/usr/src/app:cached"
+      - "/tmp:/tmp:delegated"
+    ports:
+      - 3001:3001
+    networks:
+      - mynetwork
 
 volumes:
   # pgdata:
