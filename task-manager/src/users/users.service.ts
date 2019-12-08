@@ -2,8 +2,8 @@ import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
-// import { Project } from '../project/project.entity';
-// import { ProjectService } from '../project/project.service';
+import { Project } from '../project/project.entity';
+import { ProjectService } from '../project/project.service';
 import { CreateUsertDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -14,13 +14,13 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) // @Inject(forwardRef(() => ProjectService))
-  // private readonly projectService: ProjectService,
-  {}
+    @Inject(forwardRef(() => ProjectService))
+    private readonly projectService: ProjectService,
+  ) {}
 
   // getters
   async getUsers(): Promise<User[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({ relations: ['projects'] });
   }
 
   async getUserByUsername(username: string): Promise<User> {
@@ -30,15 +30,15 @@ export class UsersService {
   // setters
   async createUser(newUser: CreateUsertDto): Promise<User> {
     const user = this.userRepository.create();
-    // const { projects } = newUser;
-    // if (projects) {
-    //   const projectsData: Project[] = await Promise.all(
-    //     projects.map((key: string) =>
-    //       this.projectService.getProjectByProjectKey(key),
-    //     ),
-    //   );
-    //   user.projects = projectsData.filter(Boolean);
-    // }
+    const { projects } = newUser;
+    if (projects) {
+      const projectsData: Project[] = await Promise.all(
+        projects.map((key: string) =>
+          this.projectService.getProjectByProjectKey(key),
+        ),
+      );
+      user.projects = projectsData.filter(Boolean);
+    }
     user.username = newUser.username;
     user.email = newUser.email;
     user.passwordHash = await this.getHash(newUser.password);
