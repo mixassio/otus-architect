@@ -2,6 +2,7 @@ import { Controller, Post, HttpStatus, Response, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/users.entity';
+import { CreateUsertDto } from '../users/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +37,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async registerUser(@Response() res: any, @Body() body: User) {
+  async registerUser(@Response() res: any, @Body() body: CreateUsertDto) {
     if (!body || !body.username || !body.password || !body.email) {
       return res
         .status(HttpStatus.FORBIDDEN)

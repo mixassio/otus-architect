@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Project } from './project.entity';
@@ -11,15 +11,18 @@ export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
+    // @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
   ) {}
 
   async getProjects(): Promise<Project[]> {
-    return await this.projectRepository.find();
+    return await this.projectRepository.find({ relations: ['users'] });
   }
+
   async getProjectByProjectKey(key: string): Promise<Project> {
-    return (await this.projectRepository.find({ key }))[0];
+    return await this.projectRepository.findOne({ key });
   }
+
   async createProject(newProject: CreateProjectDto): Promise<Project> {
     const project = this.projectRepository.create();
 
